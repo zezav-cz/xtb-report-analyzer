@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+# This file is part of the xtb_report_analyzer project.
+#
+# The xtb_report_analyzer project is released under the MIT License.
+
+require_relative '../lib/cli'
+
+CLI.start(ARGV)

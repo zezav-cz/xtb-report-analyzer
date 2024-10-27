@@ -1,0 +1,2 @@
+adapter: 'sqlite3'
+database: 'dev/sqlite3.db'

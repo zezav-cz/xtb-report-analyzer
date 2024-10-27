@@ -1,0 +1,49 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  create_db:
+    desc: "Create a dummy SQLite3 database"
+    aliases:
+      - cd
+    cmds:
+      - mkdir -p dev
+      - sqlite3 dev/sqlite3.db "VACUUM;"
+    preconditions:
+      - sh: test ! -f dev/sqlite3.db
+        msg: "Database already exists. Skipping creation."
+
+  delete_db:
+    desc: "Delete the dummy SQLite3 database"
+    aliases:
+      - rd
+    cmds:
+      - rm -f dev/sqlite3.db
+    preconditions:
+      - sh: test -f dev/sqlite3.db
+        msg: "Database does not exist. Skipping deletion."
+
+  run_migrations:
+    desc: "Run migrations on the SQLite3 database"
+    aliases:
+      - rm
+    cmds:
+      - bundle exec rake db:up
+
+  fmt:
+    desc: "Format the codebase"
+    aliases: [f]
+    cmds:
+      - bundle exec rufo .
+    sources:
+      - "**/*.rb"
+    method: checksum
+
+  lint:
+    desc: "Lint the codebase"
+    aliases: [l]
+    cmds:
+      - bundle exec rubocop {{ .CLI_ARGS }}
